@@ -1,23 +1,21 @@
 import logo from './logo.svg';
 import './App.css';
+import  DigitalTime  from './DigitalTime';
+import Timer from './Timer';
+import Resume from './Resume';
+import Border from './Reactexample/Border';
+import TicTocToe from './TicTocToe';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div><p>Digital Time </p></div>
+      <TicTocToe />
+      {/* <DigitalTime /> */}
+      {/* <Timer /> */}
+      {/* <Border>
+      <Resume />
+      </Border> */}
     </div>
   );
 }
