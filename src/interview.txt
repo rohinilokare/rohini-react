@@ -1,0 +1,432 @@
+================
+My Data ==>  https://github.com/sudheerj/reactjs-interview-questions?tab=readme-ov-file#what-is-react
+
+React was created by Jordan Walke, a software engineer working for Facebook. React was first deployed on Facebook's News Feed in 2011 and on Instagram in 2012.
+
+Q. what is ES in javascript
+
+==> "ES" in JavaScript typically stands for "ECMAScript." ECMAScript is the standard upon which JavaScript is based, 
+defining the core features of the language. It specifies the syntax, semantics, and standard library for JavaScript.
+
+Over time, ECMAScript has gone through several versions, each introducing new features and improvements to the language. For example:
+
+ES5 (ECMAScript 5): Introduced in 2009, ES5 brought significant improvements to the language, such as strict mode, JSON support, and additional array methods (like forEach, map, filter, etc.).
+
+ES6 (ECMAScript 2015): Released in 2015, ES6 introduced many new features, including arrow functions, classes, template literals, let and const for variable declaration, destructuring assignment, and more.
+
+ES7, ES8, ES9, etc.: Subsequent versions of ECMAScript continued to add new features and enhancements. For example, ES7 introduced Array.prototype.includes,
+ ES8 introduced async functions and shared memory and atomics, and ES9 introduced features like rest/spread properties, Promise.prototype.finally, and more.
+
+ESNext: Refers to features and proposals that are in the pipeline for future versions of ECMAScript.
+
+When developers refer to "ES" in JavaScript, they are typically discussing features, syntax, or functionality based on one of these ECMAScript versions.
+---------------------------------------------------------------
+Q. which ES version used currently in reactJS
+
+
+==> The specific ECMAScript version used in a React project may vary depending on factors such as:
+
+The preferences of the development team.
+The JavaScript features required by the libraries and frameworks used alongside React.
+The target browsers and environments where the React application will run, as some features may not be supported in older browsers without transpilation.
+
+In summary, while there isn't a specific ECMAScript version mandated by React itself,
+ modern React projects typically use ES6 (ES2015) and newer features to take advantage of the latest JavaScript capabilities.
+ 
+-------------------------------------------------------------------------------------------
+ ES6, also known as ECMAScript 2015, introduced several significant features and improvements to JavaScript. Here are some of the key features introduced in ES6:
+ 
+ 1. Arrow Functions: Arrow functions provide a concise syntax for writing anonymous functions. 
+ They also have lexical scoping of this, which can be quite handy in certain situations.
+ // ES5
+function add(a, b) {
+    return a + b;
+}
+
+// ES6 (Arrow Function)
+const add = (a, b) => a + b;
+********
+2. Let and Const: let and const are block-scoped variable declarations. let allows variables to be reassigned, 
+while const creates constants whose values cannot be reassigned.
+
+
+3. Template Literals: Template literals allow for easier string interpolation and multiline strings.
+const name = 'John';
+console.log(`Hello, ${name}!`);
+
+4. Destructuring Assignment: 
+Destructuring allows you to extract values from arrays or objects into variables.
+const [a, b] = [1, 2];
+const { x, y } = { x: 10, y: 20 };'
+
+5. Classes: ES6 introduced a more convenient syntax for creating constructor functions and prototypes, known as classes.
+class Person {
+    constructor(name) {
+        this.name = name;
+    }
+
+    sayHello() {
+        console.log(`Hello, my name is ${this.name}.`);
+    }
+}
+
+const person = new Person('Alice');
+person.sayHello();
+
+6. Modules: ES6 introduced native support for modules, allowing for better code organization and reuse.
+ You can export and import modules using export and import statements.
+ 
+ export function foo() {
+    console.log('foo');
+}
+
+// main.js
+import { foo } from './module';
+foo(); // logs 'foo'
+
+7. There are many more enhancements, including for...of loops, default parameters, rest parameters, spread syntax, and more,
+all of which contribute to making JavaScript code more expressive, readable, and maintainable.
+
+----------------------------------------------
+****************** React can batch multiple state updates********************************
+React hooks 
+1. useEffect - https://www.youtube.com/watch?v=e2dnTG3wlPM  (PW) / https://www.youtube.com/watch?v=-4XpG5_Lj_o(youtuber)
+
+ <button onClick={() => {
+         setNumber(number + 1)
+         setNumber(number + 1)
+         setNumber(number + 1)
+      }} >Click me</button>  in this onclick function , number will be increase by 1 only on click button, why?
+	  
+	 In React, state updates using useState are asynchronous. When you call setNumber(number + 1), React doesn't immediately update the state.
+	 Instead, it schedules the update and queues it up to be processed later.
+	 This is to ensure that React can batch multiple state updates into a single re-render for performance reasons.
+	
+Even though setNumber is called three times in succession, the value of number remains the same throughout the entire click event handler.
+Each time you call setNumber(number + 1), you're effectively incrementing the same value of number, which hasn't been updated yet.
+
+To correctly increment the value by 3 on each click, you should use the functional form of setNumber,
+which takes the previous state as an argument. This ensures that you're always updating based on the latest state:
+
+<button onClick={() => {
+    setNumber(prevNumber => prevNumber + 1)
+    setNumber(prevNumber => prevNumber + 1)
+    setNumber(prevNumber => prevNumber + 1)
+}}>Click me</button>
+
+==> here incrementing by 3
+
+playcode.io/react
+trial =>
+<button onClick={() => {
+         setNumber(number + 1)
+         setNumber(prevNumber => prevNumber + 1)
+         setNumber(prevNumber => prevNumber + 1)
+         setNumber(prevNumber => prevNumber + 1)
+         setNumber(number + 1)
+      }} >
+	  
+	  in this example, it is considering only last setNumber(0 and increment value only by 1
+
+-------------------------------------------
+
+Q. what is the use of this multiple calling setNumber, we can directly add + 3
+
+1. State Dependencies: If the new state depends on the current state,
+you should use the functional form of setNumber to ensure that you're always working with the latest state. For example:
+
+2. Batching Updates: If you have multiple state updates that need to be executed together and you want to ensure that they're batched together for performance reasons,
+you can use multiple setNumber calls:
+setNumber(prevNumber => prevNumber + 1);
+setNumber(prevNumber => prevNumber + 2);
+This way, React can optimize the updates and re-renders accordingly.
+
+3. Side Effects: If you have side effects that depend on the state change and need to be executed after the state has been updated,
+you might use multiple setNumber calls:
+
+---*******Functional Form of setState *******-----------------
+Using the functional form of setState ensures that we're always working with the latest state value, even if state updates are asynchronous.
+This is particularly useful when the new state depends on the previous state,
+as it helps avoid race conditions and ensures correctness in our application logic.
+
+
+------------------------------------------------------------------------------------------
+State Snapshot
+
+In React, the term "state snapshot" typically refers to capturing or recording the current state of a component at a particular point in time.
+This can be useful in various scenarios, such as debugging, logging, or implementing undo/redo functionality.
+When we say "state snapshot," we mean taking a copy or snapshot of the current state object of a React component.
+This snapshot represents the values of all state variables in that component at a specific moment.
+
+const [count, setCount] = useState(0);
+  const [text, setText] = useState('');
+
+  const snapshot = {
+  count,
+  text
+};
+
+==================================================
+Ques. 
+Make a digital CLOCK Component using useEffect Hook.
+We need to only update the time Upto seconds in it. HH:MM:SS format can be used. Can you make it send a Console.log at end of every minute ?
+
+==> import React, {useState ,useEffect} from 'react';
+
+export function TimeStopwatch(props) {
+   const [time, setTime] = useState(getCurrentTime());
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTime(getCurrentTime());
+    }, 1000);
+
+    // Cleanup function to clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      console.log('End of minute');
+    }, 60000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  function getCurrentTime() {
+    const now = new Date();
+    const options = {
+      timeZone: 'Asia/Kolkata', // 'Asia/Kolkata' is the time zone for IST
+      hour12: true, // Use 12-hour format
+      hour: 'numeric',
+      minute: '2-digit',
+      second: '2-digit'
+    };
+    const timeIST = now.toLocaleString('en-IN', options);
+   
+    return timeIST
+  }
+
+
+  return <div>{time}</div>;
+};
+
+
+Assignment 2 : Implement a simple TIMER that displays the elapsed time since the start button was pressed, and it can be stopped and reset. Like a stopwatch.
+
+==> import React, { useState, useEffect } from 'react';
+
+const Timer = () => {
+  const [startTime, setStartTime] = useState(null);
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [timerRunning, setTimerRunning] = useState(false);
+
+  useEffect(() => {
+    let intervalId;
+
+    if (timerRunning) {
+      intervalId = setInterval(() => {
+        setElapsedTime(Date.now() - startTime);
+      }, 1000);
+    } else {
+      clearInterval(intervalId);
+    }
+
+    return () => clearInterval(intervalId);
+  }, [timerRunning, startTime]);
+
+  const handleStart = () => {
+    setStartTime(Date.now() - elapsedTime);
+    setTimerRunning(true);
+  };
+
+  const handleStop = () => {
+    setTimerRunning(false);
+  };
+
+  const handleReset = () => {
+    setStartTime(null);
+    setElapsedTime(0);
+    setTimerRunning(false);
+  };
+
+  const formatTime = (time) => {
+    const seconds = Math.floor(time / 1000) % 60;
+    const minutes = Math.floor(time / (1000 * 60)) % 60;
+    const hours = Math.floor(time / (1000 * 60 * 60)) % 24;
+
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  return (
+    <div>
+      <p>Elapsed Time: {formatTime(elapsedTime)}</p>
+      <button onClick={handleStart} disabled={timerRunning}>Start</button>
+      <button onClick={handleStop} disabled={!timerRunning}>Stop</button>
+      <button onClick={handleReset}>Reset</button>
+    </div>
+  );
+};
+
+export default Timer;
+=============================
+explanation of formula ==> 
+const seconds = Math.floor(time / 1000) % 60;
+
+The expression % 60 represents the modulo operation in JavaScript. It calculates the remainder when the first operand is divided by the second operand.
+time / 1000 converts the time from milliseconds to seconds.
+% 60 calculates the remainder when dividing the seconds by 60. This ensures that the value of seconds never exceeds 59, even if time represents a longer duration.
+
+======================================
+Q  prop drilling-
+
+
+You can solve prop drilling by using useContext
+
+liffting up state
+
+useContect
+ 3 steps
+ 1. create a context at root level
+ 2. context provider
+ 3. context consumer
+ 
+ ==============================
+ Unit testing in react application
+ 
+ npm install --save-dev jest
+npm install --save-dev @testing-library/react
+
+=========================
+What are Pure Components?
+Pure components are the components which render the same output for the same state and props. 
+In function components, you can achieve these pure components through memoized React.memo() API wrapping around the component
+
+Note: React.memo() is a higher-order component.
+
+===================================
+ The important point is whenever the state object changes, the component re-renders.
+ 
+ 
+=====================
+ const ChildComponent = ({name, age, gender="male"}) => props -> destructuring the props
+ 
+ Note: The default value won't be used if you pass null or 0 value.
+ i.e, default value is only used if the prop value is missed or undefined value has been passed.
+ 
+========================================
+ What are synthetic events in React?
+SyntheticEvent is a cross-browser wrapper around the browser's native event. Its API is same as the browser's native event, including stopPropagation() and preventDefault(), except the events work identically across all browsers. The native events can be accessed directly from synthetic events using nativeEvent attribute.
+
+Let's take an example of BookStore title search component with the ability to get all native event properties
+
+function BookStore() {
+  handleTitleChange(e) {
+    console.log('The new title is:', e.target.value);
+    // 'e' represents synthetic event
+    const nativeEvent = e.nativeEvent;
+    console.log(nativeEvent);
+    e.stopPropogation();
+    e.preventDefault();
+  }
+
+  return <input name="title" onChange={handleTitleChange} />
+}
+
+nativeEvent = {
+    "isTrusted": true
+}
+
+=================================
+https://www.lambdatest.com/learning-hub/jest-interview-questions
+
+
+==========================================*****GS Lab nterview Question ************
+
+Q. How to achieve componennt will unmount in reacct functional component
+useEffect(() => {
+    // This function will run after the component is mounted
+    console.log('Component mounted');
+
+    // This function will run before the component is unmounted
+    return () => {
+      console.log('Component will unmount');
+    };
+  }, []);
+  
+=====================================
+
+Q. inline HTML => 
+Inline HTML is a technique used in web development where HTML code is embedded directly within JavaScript code, typically using template literals.
+This allows developers to dynamically generate HTML content based on user input or other variables.
+
+Here's an example of using inline HTML in JavaScript:
+
+
+const userName = 'John Doe';
+const html = `<div>Hello, ${userName}!</div>`;
+document.body.innerHTML = html;
+
+What are the benefits of using inline HTML in JavaScript?
+1. Dynamic content generation
+2. Simplified code:
+3. Improve performance
+4. Better control over HTML structure: Inline HTML allows developers to have more control over the structure of the generated HTML content.
+This can be useful for creating complex layouts or ensuring that generated content is semantically correct.
+
+Overall, while inline HTML in JavaScript should be used judiciously, it can be a powerful technique for generating dynamic content and improving performance in certain
+
+========================
+Q.. Explain Hoisting in javascript.
+
+Hoisting is the default behaviour of javascript where all the variable and function declarations are moved on top.
+hoistedVariable = 3;
+console.log(hoistedVariable); // outputs 3 even when the variable is declared after it is initialized	
+var hoistedVariable;
+
+
+============== difference between let and var
+
+function example() {
+  if (true) {
+    var x = 1;
+    let y = 2;
+  }
+  console.log(x); // Output: 1
+  console.log(y); // ReferenceError: y is not defined
+}
+
+example()
+
+==============================
+6. Explain Implicit Type Coercion in javascript.
+
+Implicit type coercion in javascript is the automatic conversion of value from one data type to another.
+It takes place when the operands of an expression are of different data types.
+
+String coercion
+var x = 3;
+var y = "3";
+x + y // Returns "33" 
+
+number coercion
+x - y = 0 y convrted to number
+
+** Boolean Coercion
+Boolean coercion takes place when using logical operators, ternary operators, if statements, and loop checks.
+To understand boolean coercion in if statements and operators, we need to understand truthy and falsy values.
+
+Truthy values are those which will be converted (coerced) to true. Falsy values are those which will be converted to false.
+
+All values except false, 0, 0n, -0, “”, null, undefined, and NaN are truthy values.
+
+If statements:
+
+Example:
+
+var x = 0;
+var y = 23;
+        
+if(x) { console.log(x) }   // The code inside this block will not run since the value of x is 0(Falsy)  
+        
+if(y) { console.log(y) }    // The code inside this block will run since the value of y is 23 (Truthy)
