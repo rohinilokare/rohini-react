@@ -1,4 +1,5 @@
 import { useState } from "react"
+import EmployeeDetails from "./EmployeeDetails"
 import "./tictoc.css"
 
 export default function TicTocToe () {
@@ -36,7 +37,9 @@ export default function TicTocToe () {
         })
     }
 
-    const handleClick = (index) => {
+    const handleClick = (index, e) => {
+      const nativeEvent = e?.nativeEvent;
+      console.log(nativeEvent);
         if(!winner){
             if(isXNext){
                 values[index] = "X"
@@ -60,12 +63,19 @@ export default function TicTocToe () {
       status = "Next player: " + (isXNext ? "X" : "O");
     }
 
+    const resetGame = () => {
+      setValues([])
+      setWinner("")
+      setIsXNext(true)
+    }
+
     return (
-        <><h2>Tic Toc Toe game: Status {status}</h2>
+        <>
+        <h2>Tic Toc Toe game: Status {status}</h2>
         <h2>Tic Toc Toe game Winner: {winner}</h2>
 
         <div>
-            <button className={"btnStyle"} onClick={() => handleClick(0)}>{values[0]}</button>
+            <button className={"btnStyle"} onClick={(e) => handleClick(0,e)}>{values[0]}</button>
             <button className={"btnStyle"} onClick={() => handleClick(1)}>{values[1]}</button>
             <button className={"btnStyle"} onClick={() => handleClick(2)}>{values[2]}</button>
         </div>
@@ -79,6 +89,10 @@ export default function TicTocToe () {
             <button className={"btnStyle"} onClick={() => handleClick(7)}>{values[7]}</button>
             <button className={"btnStyle"} onClick={() => handleClick(8)}>{values[8]}</button>
         </div>
+
+        <button onClick={() => resetGame()}>RESET</button>
+
+        <EmployeeDetails winner={winner} />
         </>
     )
 }
